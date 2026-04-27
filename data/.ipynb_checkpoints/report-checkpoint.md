@@ -1,150 +1,175 @@
-📊 Dataset Report
-📦 Dataset Overview
+# Dataset Report
+
+## Dataset Overview
 
 The dataset consists of two aligned collections:
 
-Articles dataset: 50 Japanese news articles, each containing an article_id, URL, title, and full text.
-Summaries dataset: 250 summaries linked to the articles via article_id, with exactly 5 summaries per article.
-🔍 Data Analysis
-No missing values in either dataset.
-Perfect alignment between articles and summaries (5 summaries per article).
+- **Articles dataset**: 50 Japanese news articles, each containing an `article_id`, URL, title, and full text.
+- **Summaries dataset**: 250 summaries linked to the articles via `article_id`, with exactly 5 summaries per article.
 
-However, we observe that only 226 out of 250 summaries are unique, indicating the presence of 24 duplicate summaries. This suggests that some generation methods may produce repeated outputs, potentially reducing diversity in the evaluation set.
+## Data Analysis
 
-Overall, while the dataset is clean in terms of structure and completeness, the presence of duplicate summaries highlights potential limitations in diversity that may impact the robustness of evaluation across systems.
+- No missing values in either dataset.
+- Perfect alignment between articles and summaries (5 summaries per article).
 
-📏 Summary Statistics
-Minimum number of characters per summary: 22
-Maximum: 302
-Mean: 126
-🧾 Sentence Distribution
-23.2% of summaries contain 1 sentence
-31.6% contain 2 sentences
-45.2% contain 3 sentences
-No summary contains more than 4 sentences
-⚠️ Observations
+However, only **226 out of 250 summaries are unique**, indicating **24 duplicate summaries**. This suggests that some generation methods may produce repeated outputs, reducing diversity in the evaluation set.
 
-Some summaries are identical but correspond to different articles (e.g., 53174534 and 48116477).
-This is not always the case, and sometimes duplicates occur within the same article.
+Overall, the dataset is structurally clean, but the presence of duplicates highlights limitations in diversity that may affect evaluation robustness.
 
-🚨 Failure Modes (Manual Inspection)
+## Summary Statistics
 
-Through manual inspection, several recurring failure modes were identified:
+- Minimum characters per summary: 22
+- Maximum: 302
+- Mean: 126
 
-Hallucinations – summaries introduce incorrect or fabricated facts
-Contradictions – summaries of the same article disagree on key facts
-Irrelevance – some summaries describe entirely different articles
-Truncation – incomplete or cut-off sentences
-Low specificity / duplication – identical summaries across articles
-Faithfulness errors – subtle distortions (numbers, locations, actors)
-Salience errors – missing the main point of the article
-Poor compression – overly long or insufficiently condensed summaries
-Noise inclusion – presence of captions, reporter notes, or metadata
-🎯 Quality Dimensions
+### Sentence Distribution
 
-The following dimensions are used to evaluate summary quality:
+- 1 sentence: 23.2%
+- 2 sentences: 31.6%
+- 3 sentences: 45.2%
+- 4+ sentences: 0%
 
-1. Faithfulness
+## Observations
 
-Measures factual consistency with the source article (absence of hallucinations)
+Some summaries are identical across different articles (e.g. `53174534` and `48116477`).  
+This is not systematic but occurs in some cases.
 
-2. Relevance
+## Failure Modes (Manual Inspection)
 
+- Hallucinations: incorrect or fabricated facts
+- Contradictions: inconsistent summaries for the same article
+- Irrelevance: summaries unrelated to the source article
+- Truncation: incomplete or cut-off sentences
+- Low specificity / duplication: identical summaries across articles
+- Faithfulness errors: subtle factual distortions (numbers, entities, locations)
+- Salience errors: missing key information
+- Poor compression: overly long or insufficiently condensed summaries
+- Noise inclusion: metadata, captions, or non-content text
+
+## Quality Dimensions
+
+### Faithfulness
+Factual consistency with the source article (absence of hallucinations)
+
+### Relevance
 Semantic similarity between article and summary
 
-3. Salience
+### Salience
+Coverage of important named entities and key information
 
-Coverage of important information via named entities
+### Conciseness
+Degree of compression relative to the source
 
-4. Conciseness
-
-Degree of compression relative to the source article
-
-5. Truncation
-
+### Truncation
 Detection of incomplete or cut-off sentences
 
-6. Noise
+### Noise
+Presence of non-informative content
 
-Presence of non-informative content (metadata, labels, captions)
+# Scoring Framework
 
-🧾 Scoring Framework
-🧠 1. Quality Dimensions
+## Quality Dimensions
 
-The evaluation framework is based on the 6 dimensions listed above.
+- Faithfulness
+- Relevance
+- Salience
+- Conciseness
+- Truncation
+- Noise
 
-⚙️ 2. Methodology
-🔹 Semantic Similarity
-Model: paraphrase-multilingual-mpnet-base-v2
-Used for relevance and redundancy estimation
-🔹 Japanese Processing
-Tokenization using SudachiPy
-Heuristic extraction of entities (kanji-based patterns)
-🧮 3. Score Construction
-Step 1 — Feature Extraction
+## Methodology
+
+### Semantic Similarity
+- Model: `paraphrase-multilingual-mpnet-base-v2`
+- Used for relevance and redundancy estimation
+
+### Japanese Processing
+- Tokenization: SudachiPy
+- Entity extraction: heuristic (kanji-based patterns)
+
+## Score Construction
+
+### Feature Extraction
 
 Each summary is evaluated using:
 
-Article–summary semantic similarity
-Hallucination proxy score
-Entity coverage
-Compression ratio
-Noise and truncation detection
-Step 2 — Normalization
+- Article–summary semantic similarity
+- Hallucination proxy score
+- Entity coverage
+- Compression ratio
+- Noise detection
+- Truncation detection
 
-Raw metrics are transformed into interpretable scores:
+### Normalization
 
-faithfulness = 1 - hallucination_score
-salience = entity recall
-conciseness = distribution-based normalization of compression ratio
-Binary flags converted into penalties
-Step 3 — Global Scoring
+- Faithfulness = 1 - hallucination_score
+- Salience = entity recall
+- Conciseness = normalized compression ratio
+- Binary flags converted into penalties
+
+### Global Score
 
 Final weighted score:
 
-Faithfulness: 30%
-Salience: 20%
-Relevance: 15%
-Conciseness: 10%
-Truncation: 10%
-Noise: 5%
-🏁 4. Outputs
+- Faithfulness: 30%
+- Salience: 20%
+- Relevance: 15%
+- Conciseness: 10%
+- Truncation: 10%
+- Noise: 5%
 
-Each summary is assigned:
+## Outputs
 
-A global score (0–1)
-Per-dimension scores
-A qualitative label:
-excellent
-good
-medium
-poor
-✅ Validation
+Each summary receives:
 
-Weights were adjusted iteratively to find a balanced evaluation, as not all dimensions are equally relevant.
+- Global score (0–1)
+- Per-dimension scores
+- Label:
+  - excellent
+  - good
+  - medium
+  - poor
 
-Score distributions show sufficient variance, indicating that the evaluator can meaningfully distinguish between summaries rather than collapsing to a narrow range.
-The global score correlates positively with relevance and salience, and negatively with hallucination, matching expected qualitative behavior.
-📊 Label Distribution (250 summaries)
-medium: 137
-good: 91
-poor: 22
-🔎 Sanity Checks
-High score + high hallucination: 0 cases
-Low score + high relevance: 0 cases
-📉 Additional Insights
-The score distribution remains somewhat concentrated, suggesting limited discriminative power.
-Compression ratios reveal variability in summarization strategies, with some summaries being highly compressed while others are more verbose.
-While most summaries remain semantically aligned with the source, a subset shows low relevance, indicating failure modes such as topic drift or hallucination.
-⚠️ Limitations
+## Validation
 
-(To be completed — suggested: evaluation bias, heuristic limitations, language-specific issues, etc.)
+Weights were tuned iteratively to balance the importance of each dimension.
 
-📝 Additional Notes
-At certain steps, French translations were used to better assess summary relevance.
-AI was used to clean and refactor parts of the notebooks, especially in the "Validation" notebook.
-The following libraries were used:
-translatepy
-sudachipy
+### Results
 
-AI assistance also helped identify additional failure modes such as poor compression and noise inclusion.
+- Score distributions show sufficient variance
+- Global score correlates positively with relevance and salience
+- Global score correlates negatively with hallucination
+
+### Label distribution (250 summaries)
+
+- medium: 137
+- good: 91
+- poor: 22
+
+### Sanity Checks
+
+- High score + high hallucination: 0 cases
+- Low score + high relevance: 0 cases
+
+## Additional Insights
+
+- Score distribution is slightly concentrated
+- Compression ratios vary widely across summaries
+- Most summaries are semantically aligned with source articles
+- Some summaries show low relevance (topic drift or hallucination)
+
+## Limitations
+
+(To be completed)
+
+## Additional Notes
+
+- Some manual checks used French translation for validation.
+- AI was used to refactor notebook code (especially validation notebook).
+- Libraries used:
+  - translatepy
+  - sudachipy
+
+AI assistance also helped identify:
+- Poor compression
+- Noise inclusion
