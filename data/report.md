@@ -33,9 +33,9 @@ Poor compression – overly long or insufficiently condensed summaries.
 Noise inclusion – presence of captions, reporter notes, or metadata.
 
 What quality dimensions matter ?
-Faithfulness → LLM-as-a-judge or NLI (entailment between article and summary)
-Coverage → Named Entity Recall (NER overlap between article and summary)
-Conciseness → length penalty (number of tokens or sentences, especially >3 sentences)
+Faithfulness → LLM-as-a-judge or NLI (entailment between article and summary, 1 = fully supported by article, 0 = hallucinations / contradictions)
+Coverage → Named Entity Recall (NER overlap between article and summary, C = |entities in summary ∩ entities in article| / |entities in article|)
+Conciseness → length penalty (number of tokens)
 
 
 The five summaries per article differ along several dimensions, including factual faithfulness, level of information coverage, conciseness, and specificity. Some summaries are fully faithful and well-balanced, while others are truncated, overly generic, or contain hallucinated details.

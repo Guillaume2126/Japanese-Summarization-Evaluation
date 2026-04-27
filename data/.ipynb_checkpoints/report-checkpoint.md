@@ -39,12 +39,3 @@ Conciseness → length penalty (number of tokens)
 
 
 The five summaries per article differ along several dimensions, including factual faithfulness, level of information coverage, conciseness, and specificity. Some summaries are fully faithful and well-balanced, while others are truncated, overly generic, or contain hallucinated details.
-
-
-Things that could be improve for the scoring:
-- hallucination detection is heuristic (no true NLI model)
-- entity extraction is approximate
-- dependency on multilingual embeddings
-- partially arbitrary thresholds
-- duplication is a dataset-level metric, not instance-level
-- limited robustness for Japanese linguistic nuances
