@@ -13,7 +13,7 @@ The goal is not to build a summarizer, but to design and validate an evaluation 
 
 ## Repository Structure
 
-submission/
+```submission/
 ├── README.md
 ├── report.md
 ├── scores.jsonl
@@ -25,7 +25,7 @@ submission/
 ├── data/
 │   ├── articles.jsonl
 │   ├── summaries.jsonl
-
+```
 ---
 
 ## How to Run
@@ -91,7 +91,7 @@ This notebook:
 
 Run:
 
-jupyter notebook code/data_visualization.ipynb
+jupyter notebook code/data analysis.ipynb
 
 Used for:
 - Exploring dataset structure
@@ -198,8 +198,6 @@ Mapped to labels:
 - Entity extraction is heuristic (regex-based)
 - Semantic model may miss fine-grained factual errors
 - No explicit fact-checking against external sources
-- Reference summaries are noisy (XL-Sum dataset limitations)
-
 ---
 
 ## AI Usage
@@ -208,6 +206,7 @@ AI tools were used to:
 - Assist in metric design exploration
 - Help refine weighting strategy
 - Support debugging and structuring of notebooks
+- Correct some sentences
 
 Final design decisions were made manually through iterative experimentation.
 

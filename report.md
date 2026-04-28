@@ -168,12 +168,14 @@ Weights were tuned iteratively to balance the importance of each dimension.
 
 - **Score calibration sensitivity**: The final weighted score depends on manually tuned weights, which may not generalize well to other datasets or tasks.
 
+- **Notebook-centric development**: The current implementation relies heavily on Jupyter notebooks, which can hinder reproducibility, deployment, and maintainability. This setup also encourages code duplication across notebooks instead of reusable modular scripts. Transitioning to structured Python scripts or packages would improve scalability, reduce redundancy, and facilitate integration into production environments.
 
 ## Additional Notes
 
-- Some manual checks used French translation for validation.
-- AI was used to refactor notebook code (especially validation notebook).
-- Libraries used:
+- Some manual checks used French translation for a better understanding.
+- 
+- AI was used to refactor notebook code (especially validation notebook) and correct some sentences.
+- These two librairies were used using AI (how to use it):
   - translatepy
   - sudachipy
 
